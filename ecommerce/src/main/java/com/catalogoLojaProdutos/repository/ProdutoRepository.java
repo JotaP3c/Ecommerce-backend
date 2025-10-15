@@ -1,6 +1,6 @@
-package com.example.ecommerce.produtosapi.repository;
+package com.catalogoLojaProdutos.repository;
 
-import com.example.ecommerce.produtosapi.model.Produto;
+import com.catalogoLojaProdutos.model.Produto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,16 +1,13 @@
-package com.example.ecommerce.produtosapi.controller;
+package com.catalogoLojaProdutos.controller;
 
-import com.example.ecommerce.produtosapi.model.Produto;
-import com.example.ecommerce.produtosapi.service.ProdutoService;
+import com.catalogoLojaProdutos.model.Produto;
+import com.catalogoLojaProdutos.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
-import java.util.Optional;
-
-/* endpoints da api :0 */
 
 @RestController
 @RequestMapping("/produtos")
