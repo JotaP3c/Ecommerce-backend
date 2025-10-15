@@ -1,7 +1,7 @@
 package com.example.ecommerce.produtosapi.controller;
 
-import com.example.ecommerce.produtosapi.model.Produto;
-import com.example.ecommerce.produtosapi.service.ProdutoService;
+import com.example.ecommerce.produtosapi.model.Pessoa;
+import com.example.ecommerce.produtosapi.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,33 +10,33 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/produtos")
-public class ProdutoController {
+@RequestMapping("/pessoas")
+public class PessoaController {
 
     @Autowired
-    private ProdutoService produtoService;
+    private PessoaService pessoaService;
 
     @GetMapping
-    public List<Produto> listarTodos() {
-        return produtoService.listarTodos();
+    public List<Pessoa> listarTodos(){
+        return pessoaService.listarTodos();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Produto> buscarPorId(@PathVariable Long id) {
-        return produtoService.buscarPorId(id)
+    public ResponseEntity<Pessoa> buscarPorId(@PathVariable Long id) {
+        return pessoaService.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Produto criar(@RequestBody Produto produto) {
-        return produtoService.salvar(produto);
+    public Pessoa criar(@RequestBody Pessoa pessoa) {
+        return pessoaService.salvar(pessoa);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Produto> atualizar(@PathVariable Long id, @RequestBody Produto produto) {
+    public ResponseEntity<Pessoa> atualizar(@PathVariable Long id, @RequestBody Pessoa pessoa) {
         try {
-            Produto atualizado = produtoService.atualizar(id, produto);
+            Pessoa atualizado = pessoaService.atualizar(id, pessoa);
             return ResponseEntity.ok(atualizado);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
@@ -45,7 +45,7 @@ public class ProdutoController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        produtoService.deletar(id);
+        pessoaService.deletar(id);
         return ResponseEntity.noContent().build();
     }
 }
