@@ -36,6 +36,11 @@ public class AuthController {
 
         Pessoa pessoa = pessoaOpt.get();
 
+        if (!Boolean.TRUE.equals(pessoa.getAtivo())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("error", "Usuário inativo!"));
+        }
+
         if (!pessoa.getSenha().equals(senha)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("error", "Senha incorreta"));
@@ -47,7 +52,8 @@ public class AuthController {
                 "token", token,
                 "nome", pessoa.getNome(),
                 "email", pessoa.getEmail(),
-                "perfil", pessoa.isPerfil() // true = admin, false = cliente
+                "perfil", pessoa.isPerfil(), /* true = admin, false = cliente */
+                     "ativo", pessoa.getAtivo()
         ));
     }
 }
