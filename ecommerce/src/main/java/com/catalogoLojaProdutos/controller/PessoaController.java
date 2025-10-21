@@ -74,4 +74,15 @@ public class PessoaController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PutMapping("/{id}/ativar")
+    public ResponseEntity<Pessoa> ativar(@PathVariable Long id) {
+        return pessoaService.buscarPorId(id)
+                .map(pessoa -> {
+                    pessoa.setAtivo(true);
+                    pessoaService.salvar(pessoa);
+                    return ResponseEntity.ok(pessoa);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
 }
