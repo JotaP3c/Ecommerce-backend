@@ -6,19 +6,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 import java.util.List;
 
 @RestController
 @RequestMapping("/pessoas")
+@CrossOrigin(origins = "http://localhost:4200") // 🔥 Permite o acesso do Angular
 public class PessoaController {
 
     @Autowired
     private PessoaService pessoaService;
 
     @GetMapping
-    public List<Pessoa> listarTodos(){
-        return pessoaService.listarTodos();
+    public ResponseEntity<List<Pessoa>> buscar(
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) Long id,
+            @RequestParam(required = false) Boolean perfil,
+            @RequestParam(required = false) Boolean ativo
+    ) {
+        if (nome != null && !nome.isEmpty()) {
+            return ResponseEntity.ok(pessoaService.buscarPorNome(nome));
+        } else if (email != null && !email.isEmpty()) {
+            return ResponseEntity.ok(pessoaService.buscarPorEmail(email));
+        } else if (id != null) {
+            return pessoaService.buscarPorId(id)
+                    .map(pessoa -> ResponseEntity.ok(List.of(pessoa)))
+                    .orElse(ResponseEntity.notFound().build());
+        } else if (perfil != null) {
+            return ResponseEntity.ok(pessoaService.buscarPorPerfil(perfil));
+        } else if (ativo != null) {
+            return ResponseEntity.ok(pessoaService.buscarPorAtivo(ativo));
+        } else {
+            return ResponseEntity.ok(pessoaService.listarTodos());
+        }
     }
 
     @GetMapping("/{id}")

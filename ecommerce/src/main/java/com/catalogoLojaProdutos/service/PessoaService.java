@@ -18,6 +18,22 @@ public class PessoaService {
         return pessoaRepository.findAll();
     }
 
+    public List<Pessoa> buscarPorNome(String nome) {
+        return pessoaRepository.findByNomeContainingIgnoreCase(nome);
+    }
+
+    public List<Pessoa> buscarPorEmail(String email) {
+        return pessoaRepository.findByEmailContainingIgnoreCase(email);
+    }
+
+    public List<Pessoa> buscarPorAtivo(Boolean ativo) {
+        return pessoaRepository.findByAtivo(ativo);
+    }
+
+    public List<Pessoa> buscarPorPerfil(Boolean perfil) {
+        return pessoaRepository.findByPerfil(perfil);
+    }
+
     public Optional<Pessoa> buscarPorId(Long id) {
         return pessoaRepository.findById(id);
     }
