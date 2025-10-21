@@ -24,6 +24,8 @@ public class Pessoa {
     @Column (nullable = false)
     private boolean perfil;
 
+    private  boolean ativo = true;
+
     public String getNome(){
         return nome;
     }
@@ -54,6 +56,13 @@ public class Pessoa {
 
     public void setPerfil(Boolean perfil){
         this.perfil= perfil;
+    }
+
+    public Boolean getAtivo() {
+        return ativo;
+    }
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
     }
 }
 
