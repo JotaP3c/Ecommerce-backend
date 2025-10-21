@@ -48,6 +48,8 @@ public class PessoaService {
             pessoa.setEmail(pessoaAtualizada.getEmail());
             pessoa.setPerfil(pessoaAtualizada.isPerfil());
             pessoa.setSenha(pessoaAtualizada.getSenha());
+            pessoa.setAtivo(pessoaAtualizada.getAtivo());
+            pessoa.setId(pessoaAtualizada.getId());
             return pessoaRepository.save(pessoa);
         }).orElseThrow(() -> new RuntimeException("Pessoa não encontrada"));
     }

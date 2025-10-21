@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/pessoas")
-@CrossOrigin(origins = "http://localhost:4200") // 🔥 Permite o acesso do Angular
+@CrossOrigin(origins = "http://localhost:4200")
 public class PessoaController {
 
     @Autowired
@@ -50,7 +50,19 @@ public class PessoaController {
 
     @PostMapping
     public Pessoa criar(@RequestBody Pessoa pessoa) {
+        pessoa.setAtivo(true); // garante que novos usuários são ativos
         return pessoaService.salvar(pessoa);
+    }
+
+    @PutMapping("/{id}/desativar")
+    public ResponseEntity<Pessoa> desativar(@PathVariable Long id) {
+        return pessoaService.buscarPorId(id)
+                .map(pessoa -> {
+                    pessoa.setAtivo(false);
+                    Pessoa atualizado = pessoaService.salvar(pessoa);
+                    return ResponseEntity.ok(atualizado);
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
@@ -61,11 +73,5 @@ public class PessoaController {
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        pessoaService.deletar(id);
-        return ResponseEntity.noContent().build();
     }
 }

@@ -1,32 +1,41 @@
 package com.catalogoLojaProdutos.model;
 
 import jakarta.persistence.*;
-import  lombok.*;
+import lombok.Data;
 
 @Entity
 @Table(name = "pessoas")
 @Data
-
 public class Pessoa {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long Id;
+    private Long id;
 
-    @Column (nullable = false)
+    @Column(nullable = false)
     private String nome;
 
-    @Column (nullable = false )
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @Column (nullable = false)
+    @Column(nullable = false)
     private String senha;
 
-    @Column (nullable = false)
+    @Column(nullable = false)
     private boolean perfil;
 
-    private  boolean ativo = true;
+    @Column(nullable = false)
+    private boolean ativo = true;
 
-    public String getNome(){
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNome() {
         return nome;
     }
 
@@ -34,35 +43,36 @@ public class Pessoa {
         this.nome = nome;
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email){
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getSenha(){
+
+    public String getSenha() {
         return senha;
     }
 
-    public void setSenha(String senha){
+    public void setSenha(String senha) {
         this.senha = senha;
     }
 
-    public boolean isPerfil (){
+    public boolean isPerfil() {
         return perfil;
     }
 
-    public void setPerfil(Boolean perfil){
-        this.perfil= perfil;
+    public void setPerfil(Boolean perfil) {
+        this.perfil = perfil;
     }
 
     public Boolean getAtivo() {
         return ativo;
     }
+
     public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
     }
 }
-
