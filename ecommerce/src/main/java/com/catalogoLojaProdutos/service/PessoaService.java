@@ -54,6 +54,7 @@ public class PessoaService {
         }).orElseThrow(() -> new RuntimeException("Pessoa não encontrada"));
     }
 
+
     public void deletar(Long id) {
         pessoaRepository.deleteById(id);
     }

@@ -43,10 +43,27 @@ public class ProdutoController {
             return ResponseEntity.notFound().build();
         }
     }
+    @PutMapping("/{id}/desativar")
+    public ResponseEntity<Produto> desativarProduto(@PathVariable Long id) {
+        Produto desativado = produtoService.desativarProduto(id);
+        return ResponseEntity.ok(desativado);
+    }
+
+    @PutMapping("/{id}/ativar")
+    public ResponseEntity<Produto> ativarProduto(@PathVariable Long id) {
+        Produto ativado = produtoService.ativarProduto(id);
+        return ResponseEntity.ok(ativado);
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         produtoService.deletar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/ativos")
+    public List<Produto> listarAtivos() {
+        return produtoService.listarAtivos();
     }
 }
