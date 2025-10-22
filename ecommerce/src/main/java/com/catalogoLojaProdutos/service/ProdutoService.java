@@ -37,6 +37,23 @@ public class ProdutoService {
         }).orElseThrow(() -> new RuntimeException("Produto não encontrado"));
     }
 
+    public Produto desativarProduto(Long id) {
+        Produto produto = produtoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+        produto.setAtivo(false);
+        return produtoRepository.save(produto);
+    }
+
+    public Produto ativarProduto(Long id) {
+        Produto produto = produtoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+        produto.setAtivo(true);
+        return produtoRepository.save(produto);
+    }
+
+    public List<Produto> listarAtivos() {
+        return produtoRepository.findByAtivoTrue();
+    }
     public void deletar(Long id) {
         produtoRepository.deleteById(id);
     }

@@ -18,4 +18,5 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
     List<Pessoa> findByAtivoTrue();
     List<Pessoa> findByPerfil(Boolean perfil);
     List<Pessoa> findByAtivo(Boolean ativo);
+
 }
