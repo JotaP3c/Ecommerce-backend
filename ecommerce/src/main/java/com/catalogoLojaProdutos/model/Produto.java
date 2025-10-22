@@ -1,30 +1,38 @@
 package com.catalogoLojaProdutos.model;
 
 import jakarta.persistence.*;
-import  lombok.*;
+import lombok.Data;
 
 @Entity
 @Table(name = "produtos")
 @Data
-
 public class Produto {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long Id;
+    private Long id;
 
-    @Column (nullable = false) /* Campo obrigatório */
+    @Column(nullable = false)
     private String nome;
 
     @Column(length = 500)
-    private String descricao; /* Limita a 500 registros a descrição */
+    private String descricao;
 
-    @Column (nullable = false)
+    @Column(nullable = false)
     private Double preco;
 
-    @Column (nullable = false)
+    @Column(nullable = false)
     private boolean ativo;
 
-    public String getNome(){
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNome() {
         return nome;
     }
 
@@ -32,27 +40,27 @@ public class Produto {
         this.nome = nome;
     }
 
-    public String getDescricao(){
+    public String getDescricao() {
         return descricao;
     }
 
-    public void setDescricao(String descricao){
+    public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
 
-    public Double getPreco(){
+    public Double getPreco() {
         return preco;
     }
 
-    public void setPreco(Double preco){
+    public void setPreco(Double preco) {
         this.preco = preco;
     }
 
-    public boolean isAtivo (){
+    public boolean isAtivo() {
         return ativo;
     }
 
-    public void setAtivo(Boolean ativo){
+    public void setAtivo(boolean ativo) {
         this.ativo = ativo;
     }
 }
