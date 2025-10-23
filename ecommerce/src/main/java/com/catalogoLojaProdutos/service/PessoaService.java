@@ -4,6 +4,8 @@ import com.catalogoLojaProdutos.model.Pessoa;
 import com.catalogoLojaProdutos.repository.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,6 +44,11 @@ public class PessoaService {
         return pessoaRepository.save(pessoa);
     }
 
+    public List<Pessoa> listarPaginado(Pageable pageable) {
+        Page<Pessoa> pagina = pessoaRepository.findAll(pageable);
+        return pagina.getContent();
+    }
+
     public Pessoa atualizar(Long id, Pessoa pessoaAtualizada) {
         return pessoaRepository.findById(id).map(pessoa -> {
             pessoa.setNome(pessoaAtualizada.getNome());
@@ -53,8 +60,6 @@ public class PessoaService {
             return pessoaRepository.save(pessoa);
         }).orElseThrow(() -> new RuntimeException("Pessoa não encontrada"));
     }
-
-
 
     public void deletar(Long id) {
         pessoaRepository.deleteById(id);

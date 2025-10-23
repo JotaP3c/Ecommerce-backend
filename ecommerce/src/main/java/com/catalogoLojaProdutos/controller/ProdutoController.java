@@ -3,14 +3,16 @@ package com.catalogoLojaProdutos.controller;
 import com.catalogoLojaProdutos.model.Produto;
 import com.catalogoLojaProdutos.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
-
-
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
+
 @RequestMapping("/produtos")
 public class ProdutoController {
 
@@ -18,8 +20,13 @@ public class ProdutoController {
     private ProdutoService produtoService;
 
     @GetMapping
-    public List<Produto> listarTodos() {
-        return produtoService.listarTodos();
+    public ResponseEntity<List<Produto>> listar(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "200") int size, // limita os registros buscados por paginação, ver se funciona
+            @RequestParam(defaultValue = "id") String sortBy
+    ) {
+        List<Produto> produtos = produtoService.listarPaginado(page, size, sortBy);
+        return ResponseEntity.ok(produtos);
     }
 
     @GetMapping("/{id}")
@@ -34,6 +41,7 @@ public class ProdutoController {
         return produtoService.salvar(produto);
     }
 
+
     @PutMapping("/{id}")
     public ResponseEntity<Produto> atualizar(@PathVariable Long id, @RequestBody Produto produto) {
         try {
@@ -42,7 +50,10 @@ public class ProdutoController {
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
+
     }
+
+
     @PutMapping("/{id}/desativar")
     public ResponseEntity<Produto> desativarProduto(@PathVariable Long id) {
         Produto desativado = produtoService.desativarProduto(id);
@@ -55,7 +66,6 @@ public class ProdutoController {
         return ResponseEntity.ok(ativado);
     }
 
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         produtoService.deletar(id);
@@ -66,4 +76,6 @@ public class ProdutoController {
     public List<Produto> listarAtivos() {
         return produtoService.listarAtivos();
     }
+
+
 }

@@ -3,6 +3,8 @@ package com.catalogoLojaProdutos.controller;
 import com.catalogoLojaProdutos.model.Pessoa;
 import com.catalogoLojaProdutos.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +24,10 @@ public class PessoaController {
             @RequestParam(required = false) String email,
             @RequestParam(required = false) Long id,
             @RequestParam(required = false) Boolean perfil,
-            @RequestParam(required = false) Boolean ativo
+            @RequestParam(required = false) Boolean ativo,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy
     ) {
         if (nome != null && !nome.isEmpty()) {
             return ResponseEntity.ok(pessoaService.buscarPorNome(nome));
@@ -36,9 +41,11 @@ public class PessoaController {
             return ResponseEntity.ok(pessoaService.buscarPorPerfil(perfil));
         } else if (ativo != null) {
             return ResponseEntity.ok(pessoaService.buscarPorAtivo(ativo));
-        } else {
-            return ResponseEntity.ok(pessoaService.listarTodos());
         }
+
+        PageRequest pageable = PageRequest.of(page, size, Sort.by(sortBy).ascending());
+        List<Pessoa> pessoas = pessoaService.listarPaginado(pageable);
+        return ResponseEntity.ok(pessoas);
     }
 
     @GetMapping("/{id}")
@@ -50,7 +57,7 @@ public class PessoaController {
 
     @PostMapping
     public Pessoa criar(@RequestBody Pessoa pessoa) {
-        pessoa.setAtivo(true); // garante que novos usuários são ativos
+        pessoa.setAtivo(true);
         return pessoaService.salvar(pessoa);
     }
 
