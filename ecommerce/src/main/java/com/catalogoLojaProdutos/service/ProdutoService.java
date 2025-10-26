@@ -23,6 +23,18 @@ public class ProdutoService {
     }
 
     public Produto salvar(Produto produto) {
+        if (produto.getPreco() == null || produto.getPreco() <= 0) {
+            throw new IllegalArgumentException("O preço deve ser maior que zero.");
+        }
+
+        boolean existe = produtoRepository
+                .findByNomeIgnoreCaseAndDescricaoIgnoreCase(produto.getNome(), produto.getDescricao())
+                .isPresent();
+
+        if (existe) {
+            throw new IllegalArgumentException("Já existe um produto com este nome e descrição.");
+        }
+
         return produtoRepository.save(produto);
     }
 

@@ -30,12 +30,20 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public Produto criar(@RequestBody Produto produto) {
-        return produtoService.salvar(produto);
+    public ResponseEntity<?> criar(@RequestBody Produto produto) {
+        if (produto.getPreco() == null || produto.getPreco() <= 0) {
+            return ResponseEntity.badRequest().body("O preço deve ser maior que zero.");
+        }
+        Produto novoProduto = produtoService.salvar(produto);
+        return ResponseEntity.ok(novoProduto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Produto> atualizar(@PathVariable Long id, @RequestBody Produto produto) {
+    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Produto produto) {
+        if (produto.getPreco() != null && produto.getPreco() <= 0) {
+            return ResponseEntity.badRequest().body("O preço deve ser maior que zero.");
+        }
+
         try {
             Produto atualizado = produtoService.atualizar(id, produto);
             return ResponseEntity.ok(atualizado);
