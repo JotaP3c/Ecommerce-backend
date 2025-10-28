@@ -20,7 +20,7 @@ public class ProdutoController {
     private ProdutoService produtoService;
 
     @GetMapping
-    public ResponseEntity<List<Produto>> listar(
+    public ResponseEntity<List<Produto>> listar( //achp q nao ta em uso, entender isso
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "200") int size, // limita os registros buscados por paginação, ver se funciona
             @RequestParam(defaultValue = "id") String sortBy
@@ -55,7 +55,8 @@ public class ProdutoController {
 
 
     @PutMapping("/{id}/desativar")
-    public ResponseEntity<Produto> desativarProduto(@PathVariable Long id) {
+    public ResponseEntity<Produto> desativarProduto(@PathVariable Long id)
+    {
         Produto desativado = produtoService.desativarProduto(id);
         return ResponseEntity.ok(desativado);
     }

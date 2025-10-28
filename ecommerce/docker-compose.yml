@@ -1,0 +1,73 @@
+
+
+services:
+  db:
+    image: postgres:16
+    container_name: ecommerce-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-ecommerce}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-admin}
+    ports:
+      - "5432:5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    networks:
+      - ecommerce-net
+
+  backend:
+    build:
+      context: ./Ecommerce-backend/ecommerce
+      dockerfile: Dockerfile
+    container_name: ecommerce-backend
+    restart: unless-stopped
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-ecommerce}
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+    volumes:
+      - uploads:/uploads   # onde o Spring serve /uploads/**
+    networks:
+      - ecommerce-net
+
+  frontend:
+    build:
+      context: ./Ecommerce-frontend/ecommerce-frontend
+      dockerfile: Dockerfile
+    container_name: ecommerce-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "4200:80"          # acessa o site em http://localhost:4200
+    networks:
+      - ecommerce-net
+
+  # opcional: pgAdmin
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: ecommerce-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@admin.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+    networks:
+      - ecommerce-net
+
+volumes:
+  dbdata:
+  uploads:
+
+networks:
+  ecommerce-net:
