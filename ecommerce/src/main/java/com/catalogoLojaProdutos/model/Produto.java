@@ -1,7 +1,11 @@
 package com.catalogoLojaProdutos.model;
 
 import jakarta.persistence.*;
+
 import lombok.Data;
+import org.antlr.v4.runtime.misc.NotNull;
+import jakarta.validation.constraints.Min;
+
 
 @Entity
 @Table(name = "produtos")
@@ -48,6 +52,7 @@ public class Produto {
         this.descricao = descricao;
     }
 
+    @Min(value = 1, message = "O preço deve ser maior que zero.")
     public Double getPreco() {
         return preco;
     }
@@ -63,4 +68,6 @@ public class Produto {
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
     }
+
+    private String imagemUrl;
 }

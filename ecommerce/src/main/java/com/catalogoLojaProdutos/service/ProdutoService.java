@@ -1,15 +1,10 @@
 package com.catalogoLojaProdutos.service;
 
-import com.catalogoLojaProdutos.model.Pessoa;
 import com.catalogoLojaProdutos.model.Produto;
 import com.catalogoLojaProdutos.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -19,10 +14,12 @@ public class ProdutoService {
     @Autowired
     private ProdutoRepository produtoRepository;
 
-
-
     public List<Produto> listarTodos() {
         return produtoRepository.findAll();
+    }
+
+    public List<Produto> listarTodosSemPaginacao() {
+        return produtoRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
     public Optional<Produto> buscarPorId(Long id) {
@@ -61,7 +58,6 @@ public class ProdutoService {
         return pagina.getContent();
     }
 
-
     public Produto ativarProduto(Long id) {
         Produto produto = produtoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
@@ -72,6 +68,7 @@ public class ProdutoService {
     public List<Produto> listarAtivos() {
         return produtoRepository.findByAtivoTrue();
     }
+
     public void deletar(Long id) {
         produtoRepository.deleteById(id);
     }
