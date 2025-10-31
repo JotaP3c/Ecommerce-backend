@@ -87,7 +87,8 @@ public class ProdutoController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadImagem(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> upload
+    Imagem(@RequestParam("file") MultipartFile file) {
         try {
             String nomeArquivo = System.currentTimeMillis() + "_" + file.getOriginalFilename();
             Path caminho = Paths.get("uploads/" + nomeArquivo);
